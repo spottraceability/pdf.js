@@ -196,6 +196,8 @@ class AnnotationElement {
       page = this.page,
       viewport = this.viewport;
     const container = document.createElement("section");
+    container.id = `section-${data.id}`;
+    container.dataId = data.id;
     let { width, height } = getRectDims(data.rect);
 
     container.setAttribute("data-annotation-id", data.id);
