@@ -24,6 +24,8 @@ import {
   warn,
 } from "./util.js";
 
+const allSettled = require("promise.allsettled");
+
 const CallbackKind = {
   UNKNOWN: 0,
   DATA: 1,
@@ -540,11 +542,12 @@ class MessageHandler {
   async _deleteStreamController(streamController, streamId) {
     // Delete the `streamController` only when the start, pull, and cancel
     // capabilities have settled, to prevent `TypeError`s.
-    await Promise.allSettled([
+    await allSettled([
       streamController.startCall && streamController.startCall.promise,
       streamController.pullCall && streamController.pullCall.promise,
       streamController.cancelCall && streamController.cancelCall.promise,
     ]);
+    allSettled.shim();
     delete this.streamControllers[streamId];
   }
 
